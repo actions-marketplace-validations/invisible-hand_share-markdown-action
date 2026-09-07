@@ -1,5 +1,5 @@
 name: 'Share Markdown with Docs MD'
-description: 'Publish a markdown file as a rendered, expiring link on docs-md.com and get the URL as a step output. No account or token needed.'
+description: 'Publish a markdown file as a rendered, expiring link on docs-md.com and get the URL as an output. No account needed.'
 author: 'Docs MD'
 branding:
   icon: 'share-2'
