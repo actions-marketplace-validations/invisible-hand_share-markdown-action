@@ -12,6 +12,11 @@ jobs:
           file: smoke.md
           expiry: 1d
       - name: Verify the raw URL serves the file
-        run: curl -sSf "${{ steps.share.outputs.raw-url }}" | grep -q 'Smoke test'
+        run: |
+          curl -sSf "${{ steps.share.outputs.raw-url }}" | grep -q 'Smoke test'
       - name: Delete the test share
-        run: curl -sSf -X DELETE "https://docs-md.com/api/share/${{ steps.share.outputs.id }}" -H "x-edit-token: ${{ steps.share.outputs.edit-token }}"
+        env:
+          SHARE_ID: ${{ steps.share.outputs.id }}
+          EDIT_TOKEN: ${{ steps.share.outputs.edit-token }}
+        run: |
+          curl -sSf -X DELETE "https://docs-md.com/api/share/$SHARE_ID" -H "x-edit-token: $EDIT_TOKEN"
