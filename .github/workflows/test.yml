@@ -1,0 +1,17 @@
+name: Test
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: printf '# Smoke test\n\nPublished by the share-markdown-action test workflow for %s.\n' "$GITHUB_SHA" > smoke.md
+      - id: share
+        uses: ./
+        with:
+          file: smoke.md
+          expiry: 1d
+      - name: Verify the raw URL serves the file
+        run: curl -sSf "${{ steps.share.outputs.raw-url }}" | grep -q 'Smoke test'
+      - name: Delete the test share
+        run: curl -sSf -X DELETE "https://docs-md.com/api/share/${{ steps.share.outputs.id }}" -H "x-edit-token: ${{ steps.share.outputs.edit-token }}"
